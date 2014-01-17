@@ -1,9 +1,10 @@
-package com.learn.android.test;
+package com.learn.android.test.impl;
 
 
 import android.app.Activity;
 
 import com.learn.android.R;
+import com.learn.android.test.TestCaseListView;
 
 
 public class SampleTestView extends TestCaseListView {

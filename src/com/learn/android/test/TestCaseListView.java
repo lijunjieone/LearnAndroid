@@ -7,8 +7,10 @@ import java.util.Vector;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -22,6 +24,8 @@ public class TestCaseListView extends FrameLayout {
 	protected ListView mList;
 	//以此开头的方法为目标用例方法
 	protected static final String TESTTAG = "test";
+	
+	protected ViewGroup.LayoutParams FILL_LAYOUTPARAMS=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 
 	public TestCaseListView(Context context) {
 		super(context);
@@ -38,6 +42,8 @@ public class TestCaseListView extends FrameLayout {
 
 	}
 	
+	
+
 	public void showTestView(View view,ViewGroup.LayoutParams lp) {
 		this.removeAllViews();
 		this.addView(view);

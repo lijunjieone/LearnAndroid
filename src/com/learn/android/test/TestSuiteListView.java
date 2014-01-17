@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -24,6 +25,29 @@ public class TestSuiteListView extends FrameLayout{
 		this.removeAllViews();
 		this.addView(v);
 	}
+	
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if(keyCode==KeyEvent.KEYCODE_BACK) {
+//			
+//			this.removeAllViews();
+//			this.addView(mList);
+//		}
+//		return super.onKeyDown(keyCode, event);
+//	}
+
+//	@Override
+//	public boolean dispatchKeyEvent(KeyEvent event) {
+//     	if(event.getKeyCode()==KeyEvent.KEYCODE_BACK) {
+//			
+//			this.removeAllViews();
+//			this.addView(mList);
+//			return true;
+//		}else {
+//			return super.dispatchKeyEvent(event);
+//		}
+//
+//	}
 	private void setupListView() {
 		mList = new TestListView(getContext()) {
 			@Override
