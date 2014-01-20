@@ -138,6 +138,40 @@ public class ScrollerTestView extends TestCaseListView {
 		showTestView(custom);
 	}
 
+	public void testLayout5() {
+		
+		CustomView5 custom=new CustomView5(this.getContext());
+		custom.setOrientation(LinearLayout.VERTICAL);
+
+//		custom.addView(f,FILL_LAYOUTPARAMS);
+		LinearLayout ll=new LinearLayout(this.getContext());
+		ll.setOrientation(LinearLayout.VERTICAL);
+		Button b=new Button(this.getContext());
+		b.setText("top");
+//		custom.getCustomViewTop().addView(b);
+		Button b2=new Button(this.getContext());
+		b2.setText("bottom");
+		WebView v=new WebView(getContext());
+//		v.setOnTouchListener(new View.OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				Log.e(LOGTAG,"WebView.onTouch"+event);
+//
+//				return false;
+//			}
+//		});
+		v.setWebViewClient(new WebViewClient() {
+			
+		});
+		v.loadUrl("http://www.qq.com");
+		ll.addView(b);
+		ll.addView(v);
+//		custom.getCustomViewBottom().addView(b2);
+		custom.addView(ll);
+		showTestView(custom);
+	}
+
 }
 class CustomView extends LinearLayout {
 
@@ -376,6 +410,7 @@ class CustomView3 extends LinearLayout {
 	private FrameLayout mCenter;
 	private CustomView4 mCustomViewBottom;
 	private int mScreenHeight=0;
+	private int mLayoutBottom=0;
 	public CustomView3(Context context) {
 		this(context, null);
 	}
@@ -444,6 +479,19 @@ class CustomView3 extends LinearLayout {
 		}
 		super.computeScroll();
 	}
+//	@Override
+//	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+////		super.onLayout(changed, l, t, r, b);
+//		for(int i = 0; i < getChildCount(); i++) {
+//			final View child = getChildAt(i);
+//
+//			if(child instanceof CustomView4) {
+//				child.layout(l, t, r, b);
+//			}else {
+//				child.layout(l, t, r, b);
+//			}
+//		}
+//	}
 	
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -500,8 +548,12 @@ class CustomView3 extends LinearLayout {
 			
 			int dis = (int)((distanceY-0.5)/2);
 			Log.i(TAG, dis + "."+distanceY+"."+mScreenHeight);
-			mCustomViewTop.smoothScrollBy(0, dis);
-			mCustomViewBottom.smoothScrollBy(0, -dis);
+//			mLayoutBottom=dis;
+//			mCustomViewTop.smoothScrollBy(0, dis);
+//			mCustomViewBottom.smoothScrollBy(0, -dis);
+			mCustomViewTop.scrollBy(0, dis);
+			mCustomViewBottom.scrollBy(0, -dis);
+//			scrollBy(0, dis);
 			return false;
 		}
 
@@ -524,7 +576,6 @@ class CustomView4 extends LinearLayout {
 	private static final String TAG = "ScrollerTestView";
 
 	private Scroller mScroller;
-	private GestureDetector mGestureDetector;
 	
 	public CustomView4(Context context) {
 		this(context, null);
@@ -535,6 +586,67 @@ class CustomView4 extends LinearLayout {
 		setClickable(true);
 		setLongClickable(true);
 		mScroller = new Scroller(context);
+	}
+
+	//调用此方法滚动到目标位置
+	public void smoothScrollTo(int fx, int fy) {
+		int dx = fx - mScroller.getFinalX();
+		int dy = fy - mScroller.getFinalY();
+		smoothScrollBy(dx, dy);
+	}
+
+	//调用此方法设置滚动的相对偏移
+	public void smoothScrollBy(int dx, int dy) {
+		Log.e(TAG,"smoothScrollBy");
+
+		//设置mScroller的滚动偏移量
+		mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy);
+		invalidate();//这里必须调用invalidate()才能保证computeScroll()会被调用，否则不一定会刷新界面，看不到滚动效果
+	}
+	
+//	@Override
+//	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+//		Log.e(TAG,"onLayout");
+//		super.onLayout(changed, l, t, r, newB);
+//	}
+	
+	@Override
+	public void computeScroll() {
+	
+		//先判断mScroller滚动是否完成
+		if (mScroller.computeScrollOffset()) {
+		
+			//这里调用View的scrollTo()完成实际的滚动
+			scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+			
+			//必须调用该方法，否则不一定能看到滚动效果
+			postInvalidate();
+		}
+		super.computeScroll();
+	}
+	
+}
+		
+
+class CustomView5 extends LinearLayout {
+
+	private static final String TAG = "ScrollerTestView";
+
+	private Scroller mScroller;
+	private GestureDetector mGestureDetector;
+	private View mFirstView;
+	
+	public CustomView5(Context context) {
+		this(context, null);
+	}
+	
+	public CustomView5(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		setClickable(true);
+		setLongClickable(true);
+		mScroller = new Scroller(context);
+		mGestureDetector = new GestureDetector(context, new CustomGestureListener());
+		mFirstView=this.getChildAt(0);
 	}
 
 	//调用此方法滚动到目标位置
@@ -567,5 +679,74 @@ class CustomView4 extends LinearLayout {
 		super.computeScroll();
 	}
 	
-}
-		
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		switch (ev.getAction()) {
+		case MotionEvent.ACTION_UP :
+			Log.i(TAG, "get Sy" + getScrollY());
+//			smoothScrollTo(0, 0);
+			break;
+		default:
+				mGestureDetector.onTouchEvent(ev);
+				return super.dispatchTouchEvent(ev);
+			
+		}
+		return super.dispatchTouchEvent(ev);
+	}
+//	@Override
+//	public boolean onTouchEvent(MotionEvent event) {
+//		switch (event.getAction()) {
+//		case MotionEvent.ACTION_UP :
+//			Log.i(TAG, "get Sy" + getScrollY());
+////			smoothScrollTo(0, 0);
+//			break;
+//		default:
+//			return mGestureDetector.onTouchEvent(event);
+//		}
+//		return super.onTouchEvent(event);
+//	}
+	
+	class CustomGestureListener implements GestureDetector.OnGestureListener {
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+
+		@Override
+		public void onShowPress(MotionEvent e) {
+			
+		}
+
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+			return false;
+		}
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2,
+				float distanceX, float distanceY) {
+			
+			boolean goDown=(distanceY<0&&getScrollY()>0);
+			boolean goUp=(distanceY>0&&getScrollY()<100);
+			
+				int dis = (int)((distanceY-0.5)/2);
+				Log.i(TAG, dis + ",goDown="+goDown+",up="+goUp+",distanceY="+distanceY+",y="+getScrollY());
+			if(goDown||goUp) {
+			smoothScrollBy(0, dis);
+			}
+			return false;
+		}
+
+		@Override
+		public void onLongPress(MotionEvent e) {
+			
+		}
+
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			return false;
+		}
+	}
+ }

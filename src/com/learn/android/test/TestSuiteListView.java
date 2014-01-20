@@ -28,6 +28,8 @@ public class TestSuiteListView extends FrameLayout{
 	
 //	@Override
 //	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		Log.e(LOGTAG,"onKeyDown");
+//
 //		if(keyCode==KeyEvent.KEYCODE_BACK) {
 //			
 //			this.removeAllViews();
@@ -36,18 +38,20 @@ public class TestSuiteListView extends FrameLayout{
 //		return super.onKeyDown(keyCode, event);
 //	}
 
-//	@Override
-//	public boolean dispatchKeyEvent(KeyEvent event) {
-//     	if(event.getKeyCode()==KeyEvent.KEYCODE_BACK) {
-//			
-//			this.removeAllViews();
-//			this.addView(mList);
-//			return true;
-//		}else {
-//			return super.dispatchKeyEvent(event);
-//		}
-//
-//	}
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		Log.e(LOGTAG,"onKeyDown");
+
+     	if(event.getKeyCode()==KeyEvent.KEYCODE_BACK) {
+			
+			this.removeAllViews();
+			this.addView(mList);
+			return true;
+		}else {
+			return super.dispatchKeyEvent(event);
+		}
+
+	}
 	private void setupListView() {
 		mList = new TestListView(getContext()) {
 			@Override

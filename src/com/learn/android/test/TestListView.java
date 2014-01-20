@@ -6,7 +6,9 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,7 +23,8 @@ import com.learn.android.utils.ClassUtils;
  */
 public abstract class TestListView extends ListView {
 
-	private final static String TAG = "TestListView";
+	private final static String LOGTAG = "TestListView";
+
 	
 	protected List<Class<?>> mViewClasses; 
 	
@@ -78,6 +81,18 @@ public abstract class TestListView extends ListView {
 		mSuperClass = cls;
 	}
 	
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		Log.e(LOGTAG,"onKeyDown");
+
+     	if(event.getKeyCode()==KeyEvent.KEYCODE_BACK) {
+			return true;
+		}else {
+			return super.dispatchKeyEvent(event);
+		}
+
+	}
+
 	
 	public class ViewListAdapter extends BaseAdapter {
 		
