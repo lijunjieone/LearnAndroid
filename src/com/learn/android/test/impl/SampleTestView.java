@@ -16,7 +16,8 @@ public class SampleTestView extends TestCaseListView {
 	}
 	
 	public void testCase1() {
-		showToastMessage("run test ");
+//		showToastMessage("run test ");
+		showToastMessage(this.getContext().getFileStreamPath("test.txt").getAbsolutePath());
 	}
 	
 	public void testCase2() {

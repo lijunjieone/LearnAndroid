@@ -119,7 +119,7 @@ public abstract class TestListView extends ListView {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			TextView tv = new TextView(mContext);
 			tv.setText(getItemName(mViewClasses.get(position).getName()));
-			tv.setHeight(40);
+			tv.setHeight(80);
 			tv.setGravity(Gravity.CENTER_VERTICAL);
 			return tv;
 		}

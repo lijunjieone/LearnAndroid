@@ -681,6 +681,7 @@ class CustomView5 extends LinearLayout {
 	
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
+		Log.i(TAG,"ev="+ev);
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_UP :
 			Log.i(TAG, "get Sy" + getScrollY());

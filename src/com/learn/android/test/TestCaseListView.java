@@ -6,8 +6,10 @@ import java.util.Vector;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -23,7 +25,7 @@ public class TestCaseListView extends FrameLayout {
 	
 	protected ListView mList;
 	//以此开头的方法为目标用例方法
-	protected static final String TESTTAG = "test";
+	protected static final String LOGTAG = "TestCaseListView";
 	
 	protected ViewGroup.LayoutParams FILL_LAYOUTPARAMS=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -37,12 +39,19 @@ public class TestCaseListView extends FrameLayout {
 	 * @param view
 	 */
 	public void showTestView(View view) {
-		this.removeAllViews();
+//		this.removeAllViews();
+		this.removeView(view);
 		this.addView(view);
 
 	}
 	
 	
+
+//	@Override
+//	public boolean dispatchTouchEvent(MotionEvent ev) {
+//		Log.e(LOGTAG,"ev="+ev.toString());
+//		return super.dispatchTouchEvent(ev);
+//	}
 
 	public void showTestView(View view,ViewGroup.LayoutParams lp) {
 		this.removeAllViews();
@@ -94,7 +103,7 @@ public class TestCaseListView extends FrameLayout {
 			
 			for(int i=0; i< m.length; i++)
 			{
-				if(m[i].getName().indexOf(TESTTAG) >=0)
+				if(m[i].getName().indexOf("test") >=0)
 				{
 					v.add(m[i]);
 				}
@@ -123,7 +132,7 @@ public class TestCaseListView extends FrameLayout {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			TextView tv = new TextView(mContext);
 			tv.setText(mTestMethods[position].getName());
-			tv.setHeight(40);
+			tv.setHeight(80);
 			tv.setGravity(Gravity.CENTER_VERTICAL);
 			return tv;
 		}
